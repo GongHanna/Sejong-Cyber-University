@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        /*
+            함수
+            - 특정 작업(기능)을 수행하는 독립적인 코드 블록으로 재사용 가능하고, 프로그램의 구조 모듈화
+            - 1번의 선언 + 여러 번의 호출로 코드를 재사용함
+
+
+
+            함수의 필요성
+            1. 코드의 재사용 : 동일한 작업을 반복적으로 수행하는 코드르 함수로 만들어 사용하는 것이 효율적
+            2. 유지보수 편의성 & 코드의 신뢰성 : 같은 코드의 중복으로 인한 수정에 걸리는 시간과 사람의 실수를 억제하고 재사용성을 높일 수 있음
+            3. 코드의 가독성 : 적절한 함수 이름은 함수 내부 코드를 이해하지 않고도 함수의 역할을 파악할 수 있게 돕고, 이는 코드의 가독성을 향상시킴
+            ※ 자바스크립트의 함수는 객체타입의 값임
+
+
+            함수의 구성요소
+            - 프로시저 = 1번 선언 + n번 사용
+            - 선언부와 호출부가 분리됨
+            - 호출 시 내부 코드를 모르더라도 기능을 사용할 수 있음
+            - 함수는 반드시 호출한 곳으로 복귀(Return) 해야 함
+
+            function getArea (length) //getArea => 키워드 함수의 이름(식별자), (length) => 함수의 입력, 머리(Header) = 함수의 원형
+            { // 몸체(Body) 
+                var area=0;
+                area = length * length;
+
+                return area; //반환(리턴)값
+            }
+            getArea(10); //함수이름만 알면 호출가능
+
+
+            매개변수와 인수
+            1. 매개변수(parameter)
+                - 함수를 정의할 때 사용하는 입력 값의 변수 이름
+                - 함수 외부에서 전달되는 값을 받는 역할 수행
+            2. 인수(argument)
+                - 함수를 호출할 때 실제로 전달하는 값
+        */
+        // 함수의 정의부(선언부, 실제로 실행되지는 않음)
+        function greet(name) { //name => 매개변수
+            console.log("Hello," + name);
+        }
+
+        // 함수의 호출부, 함수는 호출해야 사용됨
+        greet("Hanna"); //Hello,Hanna, "Hanna" => 인수
+        greet("한나"); //Hello,한나
+
+        /*
+            매개변수의 유효범위
+            - 함수의 매개변수는 함수 몸체 내부에서만 참조할 수 있음
+            - 매개변수의 스코프(유효범위)는 함수 내부임
+        */
+        //    function add(x,y) {
+                // console.log(x,y); //1 2 , x, y는 함수 내부 지역변수라 함수 밖에서는 쓸 수 없음.
+                // return x+y;
+        //    }
+        //    add(1,2);
+        //    console.log(x,y); //ReferenceError: x is not defined
+
+
+       /*
+            매개변수와 인수의 개수
+            - 함수는 매개변수(parameters)의 개수와 인수(argument)의 개수가 일치하지 않아도 됨
+            1. 인수가 매개변수보다 부족한 경우
+                - 나머지 매개변수에 대해서는 암묵적으로 ubndefined
+            2. 인수가 매개변수보다 많은 경우
+                - 모든 인수는 암묵적으로 arguments 객체에 프로퍼티로 보관
+       */
+
+        // 매개변수의 개수 > 인수의 개수 = 나머지 매개변수 undefined
+       function mul(x,y) {
+        console.log(x,y);
+       }
+       mul(1); //1 undefined
+
+       // 매개변수의 개수 < 인수의 개수 = arguments에 보관
+       function sub(x,y) { //매개변수
+        console.log(arguments); //[arguments] {'0':3, '1':2, '2':1} -> 선언 없이 arguments를 암묵적으로 사용 가능
+        return x - y;
+       }
+       sub(3,2,1); //1, 인수
+       /*
+            인수가 많아도 앞에서부터 매개변수에 순서대로 할당된다.
+            남는 인수는 arguments에서만 확인 가능하고, 매개변수로는 사용되지 않는다.
+            그래서 sub(3,2,1)은 사실상 sub(3,2)와 같은 효과 → 3 - 2 = 1.
+       */
+
+
+       /*
+          매개변수 사용 시 고려사항
+          - 자바스크립 함수는 매개변수와 인수의 개수가 일치하는지 확인하지 않음
+          - 자바스크립트는 '동적타입언어'
+            -> 자바스크립트 함수는 매개변수의 타입을 사전에 지정할 수 없음
+          - 자바스크립트의 경우 함수를 정의할 때, 인수가 전달되었는지 확인할 필요가 있음
+            1. typeof 연산자를 사용하는 방법
+            2. 인수가 전달되지 않은 경우, 단축 평가르 사용하는 방법
+            3. 매개변수에 기본값(Default Value)을 할당하는 방법
+            4. 정적 타입 선언이 가능한 Typescript를 사용하는 방법
+       */
+       // typeof 연산자로 arguments 문제 방지
+       function add(x,y) {
+            if (typeof x !== "number" || typeof y !== "number") { //typeof 연산자를 사용하는 방법
+                throw new TypeError("인수는 모두 숫자(number)값 이어야 합니다.");
+            }
+
+            return x + y;
+       }
+       console.log(add(1,2)); //3
+       //console.log(add(2)); //TypeError: 인수는 모두 숫자(number)값 이어야 합니다., y는 전달되지 않음 → 자동으로 undefined
+       //console.log(add("a", "b")); //TypeError: 인수는 모두 숫자(number)값 이어야 합니다.
+
+       // 인수가 전달되지 않은 경우, 단축 평가를 사용하는 방법
+       function mul(a,b,c) {
+        a= a || 1;
+        b= b || 1;
+        c= c || 1;
+        /*
+            인수가 전달되지 않은 경우, 단축평가를 사용하는 방법
+                -> 만약 a가 undefined, 0, false, Null, NaN, "" 중 하나라면 1로 대체되고, 이들 중 아무것도 아닐 경우에는 원래 값(a,b,c)을 그대로 출력
+            
+            단축평가(Shor-Circuit Evaluation)란?
+                -> 논리연산자 ||(OR)와 &&(AND)를 사용할 때, 앞의 조건만으로 결과가 확정되면 뒤를 평가하지 않고 넘어가는 방식
+        */
+
+        return a * b * c;
+       }
+       console.log(mul(1,2,3)); //6
+       console.log(mul(1,2)); //2
+       console.log(mul(1)); //1
+       console.log(mul()); //1
+
+       // 매개변수에 기본값(Default Value)을 할당하는 방법
+       // 매개변수 기본값 설정으로 인수 매칭 불일치 문제 방지
+       function sub(a=0, b=0) { //매개변수에 기본값을 할당하는 방법
+        return a - b;
+       }
+       console.log(sub(10,9)); //1
+       console.log(sub(10)); //10
+       console.log(sub()); //0
+
+       // 정적타입선언이 가능한 Typescript를 사용하는 방법
+       // Typescript에서는 매개변수와 반환타입을 명시
+       //function add(a: number, b: number):number {
+       // return a + b;
+       //}
+       // 사용 예
+       //console.log(add(3,5)); //출력: 8
+       //console.log(add("3",5)); //오류 : string 타입은 number에 할당할 수 없음
+
+
+       /*
+            가변인자(Rest Parameter)
+            - ...(나머지 인자)문법을 사용해 여러 인자를 하나의 배열로 받음
+       */
+      function printFruits(...fruits) { //fruits =["사과", "바나나", "포도"]로 인식
+        console.log(fruits);
+      }
+      printFruits("사과", "바나나", "포도"); //(3) ['사과', '바나나', '포도']
+      printFruits("사과", "바나나"); //(2) ['사과', '바나나']
+
+
+      /*
+            arguments 객체
+            - 함수 호출 시 전달된 인자들을 담는 유사 배열 객체
+            - 객체함수 선언 방식에서만 사용 가능(function 키워드)
+      */
+     function showArgs() {
+        // 화살표 함수(arrow function)에서는 arguments가 생성되지 않음
+        console.log(arguments); //유사 배열 객체
+     }
+     showArgs("a", "b", "c"); //Arguments(3) ['a', 'b', 'c', callee: ƒ, Symbol(Symbol.iterator): ƒ]
+
+
+
+     /*
+        함수의 반환문
+
+        return 명령문
+        - return문은 함수의 실행 결과를 호출한 곳으로 반환하는 역할을 함
+        - return을 만나면 함수는 즉시 종료되며, 뒤에 있는 코드는 실행되지 않음
+        - 반환값이 없으면 undefined를 반환함
+     */
+    function sayHello() {
+        return "Hello, world!"; //실행 결과를 호출한 곳으로 반환하는 역할
+    }
+    const message = sayHello();
+    console.log(message); //Hello, world!
+
+    // 다양한 형태의 반환값, 숫자 반환
+    function getNum() {
+        return 42;
+    }
+     console.log(getNum()); //42
+    // 객체 반환
+    function getUser() {
+        return {name: "Hanna", age:"28"};
+    }
+    console.log(getUser()); //{name: 'Hanna', age: '28'}
+    // 조건부 반환
+    function isAdult(age) {
+        return age >= 18;
+    }
+    console.log(isAdult(28)); //true
+    console.log(isAdult(10)); //false
+
+
+    /*
+        정리
+        - 함수(Function) : 특정 작업을 수행하는 코드 묶음
+        - 매개변수(Parameter) : 함수 정의 시 입력받는 변수
+        - 인자(Argument) : 함수 호출 시 전달하는 실제 값
+        - 기본값(Default Parameter) : 인자가 생략되었을 때 사용하는 값
+        - 가변 매개변수(Rest Parameter) : 여러개의 인자를 하나의 배열로 받는 매개변수
+        - arguments 객체 : 함수 호출 시 전달된 인자들은 담는 유사 배열 객체
+        - 반환값(Return) : 함수가 수행한 결과로 돌려주는 값
+    */
+
+    // 두 수 중 큰 값을 구하는 함수 구현하기
+    /*function maxNum(a,b) {
+        var max = 0;
+
+        if(a > b) {
+            max = a;
+        } else {
+            max = b;
+        }
+
+        return max;
+    }//선언부
+
+    console.log(maxNum(100,200)); //200
+
+    var result = maxNum(100,200);
+    console.log((result)); //200*/
+
+    function maxNum(a,b) {
+        var max = a;
+
+        if(a < b) {
+            max = b;
+        }
+
+        return max;
+    }//선언부
+
+   console.log(maxNum(100,200)); //200
+
+    var result = maxNum(100,200);
+    console.log((result)); //200
+
+    result = maxNum(300,400);
+    console.log(result); //400
+
+    </script>
+</body>
+</html>

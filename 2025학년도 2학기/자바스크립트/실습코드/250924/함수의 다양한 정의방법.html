@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        /*
+            함수의 정의(define) 방법 종류
+            1. 함수 선언식
+            function sayHi() {
+            }
+                - 호이스팅 됨
+                - 가장 전통적인 방식
+                - ES3 이상 지원(기본 지원)
+            2. 함수 표현식
+            const sayHi = function() {
+            }
+                - 호이스팅 안됨
+                - 코드의 유연성, 가독성 높음
+                - ES3 이상 지원(기본 지원)
+            3. 화살표 함수
+            const sayHi = () => {
+            }
+                - this 바인딩 없음
+                - 간결한 문법임
+                - ES6 이상 지원(2015)
+            4. Function 생성자
+            const sayHi
+            = new Function (
+            'console.log("Hi")')
+                - 동적으로 새로운 함수를 생성가능
+                - 보안/성능 이슈 있음
+                - ES3 이상 지원(기본 지원)
+        */
+       
+        // {}은 중의적 해석 가능
+
+        //블록문으로 오해되는 경우
+        function wrong() {
+            return
+            {
+                message: "Oops"
+            };
+        }
+        console.log(wrong()); //undefined
+        /*
+            {}는 블록문으로 해석되고, return은 세미콜론 자동 삽입(ASI)에 의해 줄에서 끝나버림
+            -> 실제로는 return;만 실행되고 {message:"Oops"}는 무시됨
+        */
+
+        //권장코드
+        function safe() {
+            return (
+                {message: "safe return"}
+            );
+        }
+        console.log(safe()); //{message: 'safe return'}
+        /*
+            객체 리터럴로 안전하게 해석하려면?
+                - return과 객체 {} 사이에 줄바꿈 하지 않기
+                - return({...})처럼 괄호로 감싸기
+        */
+
+
+        /*
+            코드의 문맥에 따른 자바스크립트 엔진의 함수 해석
+            - 자바스크립트 엔진은 코드의 문맥에 따라, 동일한 함수 리터럴을 함수 표현식 or 함수 선언문으로 해석하는 경우가 있음
+            1. 함수 표현도 중의적 해석 가능
+                - 함수 리터럴이 단독으로 사용 -> 함수 선언문(값으로 평가되지 않고, 실행만 되는 문장)으로 해석
+                - 함수 리터럴이 값처럼 평가되어야 하는 문맥 -> 함수 리터럴 표현식(값으로 평가될 수 있는 문장)으로 해석
+                예 : 변수에 할당, 인자로 전달, 연산자 오른쪽 등
+        */
+       //function sayHello()는 문장의 시작이고, 선언문으로 해석됨
+       function sayHello() {
+        console.log("Hello");
+       }
+       sayHello(); //Hello
+       /*
+            함수 선언문으로 해석되는 경우 : 호이스팅(hoisting)되어 함수 정의 이전에도 호출 가능
+       */
+
+       //변수에 할당시
+       const greet = function() {
+        console.log("Hi");
+       };
+       greet(); //Hi
+
+       //괄호로 감싸서 피연산자로 사용 시
+       (function () {
+        console.log("IIFE 실행");
+       })(); //IIFE 실행
+       /*
+            함수 표현식으로 해석되는 경우 : 호이스팅되지 않음(선언 이후에만 호출 가능)
+       */
+
+
+       /*
+            화살표 함수
+            - function 키워드 없이 간결하게 '기호'로 함수 정의
+            - 내부의 this, argument, super를 상속(Lexical binding)
+                -> this를 자동으로 바인딩(정적 바인딩)
+       */
+      const add = (a, b) => {
+        return a + b;
+      };
+      // 축약형(한 줄 반환 시)
+      const square = x => x * x;
+
+
+      /*
+            Function 생성자 함수
+            - 문자열을 받아서 새로운 함수를 동적으로 생성
+                -> 보안상 위험할 수 있으며, 거의 사용되지 않음
+            - new Function(arg1, arg2, ..., body) 형식 (함수객체 생성)
+            - 내부적으로 eval()과 유사하게 동작해 문자열로 된 자바스크립트 코드를 받아 실행하는 함수
+                -> eval("표현식"): 표현식을 실행하여 그 결과 값을 반환
+      */
+     //기본코드
+     const sum  = new Function("a", "b", "return a + b");
+     console.log(sum(2,3)); //5
+
+     //동적 코드 생성 예
+     const args = ['x', 'y'];
+     const body = 'return x * y;'; //문자열로 받은 코드를 런타임에 동적으로 함수로 만들 수 있음
+     const multiply = new Function(...args, body);
+     console.log(multiply(4,5)); //20
+    </script>
+</body>
+</html> 

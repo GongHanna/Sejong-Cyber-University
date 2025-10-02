@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        /*
+            함수란?
+            - 1번의 선언 + 여러번의 호출로 코드를 재사용함
+
+
+            스코프란?
+            - 변수에 접근할 수 있는 범위(유효 범위)
+            - 자바스크립트는 정적 스코프의 원칙을 준수
+                -> 변수의 접근 가능 여부(=스코프)는 실행되는 위치가 아니라 "변수가 선언된 위치"에 의해 결정(코드 작성시 결정)됨
+            
+            - 전역 스코프와 지역(함수, 블록) 스코프
+            - 함수 밖/안에서 변수 선언과 호출 테스트를 통해 유효 범위 확인 가능
+        */
+       var x = 10; //전역 변수
+       function showX() {
+        var y = 20; //지역 변수
+        console.log(x); //접근 가능
+       }
+       showX(); //10
+       console.log(x); //10, 접근 가능
+       //console.log(y); // 접근 불가능
+
+       /*
+            스코프의 종류
+            1. 전역 스코프 : 코드 어디에서든 접근 가능
+                let y = 1;
+            2. 함수 스코프 : 함수 내부에서만 접근 가능 -> var로 선언
+                {var y = 2;}
+            3. 블록 스코프 : 블록 내에서만 접근 가능 -> let, const로 선언
+                if(true) {let z = 3;}
+       */ 
+
+       function test() {
+        if (true) {
+            var a = "var";
+            let b = "let"; // let : 블록 내에서만 접근 가능
+            console.log(a); //var
+            console.log(b); //let
+        }
+        console.log(a); // var (함수 스코프)
+        // console.log(b); 오류 (블록 스코프)
+       }
+       test();
+
+       /*
+            var는 블록 단위가 아니라 함수 단위 스코프를 가짐
+            함수 내 블록 (if, for, {})에서 선언해도 함수 전체에서 접근 가능함
+       */
+      function test1() {
+        if(true) {
+            var x = 5; //let과 비교
+        }
+        console.log(x); //5, var는 함수 레벨 스코프
+      }
+      test1();
+
+      /*
+        렉시컬 스코프의 특징
+        - 자바스크립트는 렉시컬 스코프 기반 언어
+        - 변수의 접근 가능 여부는 변수가 선언된 위칯에 의해 미리 결정됨 (실행 위치 x)
+      */
+
+      var msg ="전역";
+
+      function outer() {
+        var msg = "outer";
+        function inner() { // 중첩함수, 내부함수
+            // inner는 outer안에서 선언되었기 때문에 msg는 렉시컬 스코프 기준으로 outer를 참조 -> 실행 위치와 상관없이 inner는 자신이 정의된 위치를 기준으로 변수 탐색
+            console.log(msg); //outer - 정의된 위치 기준
+        }
+        return inner; // 반환된 inner 함수는 outer의 실행 컨텍스트가 끝난 뒤에도 그 환경(스코프)에 대한 참조 유지
+      }
+      const fn = outer(); // inner 함수 값이 반환됨 -> 클로저
+      fn(); //outer
+
+      /*
+        스코프 체인이란?
+        - 변수를 검색하는 연결 구조(체인)
+        - 변수를 찾을 때, 현재 스코프 -> 상위 스코프 -> 전역 스코프로 단계적으로 찾아 올라가는 순차적 구조
+      */
+
+      let a = "global";
+
+      function outer1() {
+        let b = "outer"; // 각 스코프의 위치에 따라 어떤 변수를 참조하는 지 예측해보기 -> 스코프 체인을 따라 "가장 가까운 변수 탐색"
+
+        function inner2() {
+            let c ="inner";
+            console.log(a); //global
+            console.log(b); //outer
+            console.log(c); //inner
+        }
+        inner2();
+      }
+      outer1();
+    </script>
+</body>
+</html>

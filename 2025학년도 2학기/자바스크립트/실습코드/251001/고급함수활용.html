@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /*
+            즉시 실행 함수(IIFE)
+            - 함수 정의와 동시에 즉시 호출되는 함수
+            - 반드시 그룹 연산자 괄호(...)로 감싸야 함
+            - 함수 이름이 없는 익명 함수를 사용하는 것이 일반적임
+        */
+        (function () {
+            let msg = "Hello, IIFE!";
+            console.log(msg);
+        })(); //Hello, IIFE!
+
+        /*
+             ** 내부 함수란?
+             중첩함수 == 내부 함수(함수 내부에 정의된 함수)
+             외부 함수 : 중첩 함수를 포함하는 함수
+ 
+             - 외부함수 내부에서만 호출할 수 있음
+             - 자신을 포함하는 외부 함수를 돕는 헬퍼함수 역할을 함
+        */
+        function outer() {
+            var x = 1;
+
+            // 중첩함수 == 내부함수
+            function inner() {
+                var y = 2;
+
+                // 외부함수의 변수 참조
+                console.log(x + y); //3
+            }
+            inner();
+        }
+        outer();
+
+        /*
+              클로저란?
+              - 중첩함수 중에서도 외부 함수의 변수나 상태를 참조하고, 그 외부함수가 이미 종료된 이후에도 그 참조르 기억하고 있는 함수
+  
+              클로저 함수를 사용하는 이유
+              - 클로저는 외부 함수의 상태를 기억하게 함
+              - 상태 유지, 정보은닉, 함수 생성 등 다양한 프로그래밍 기법에 핵심적으로 사용됨
+  
+              1. 상태 유지(데이터 은닉)
+              - 외부에서 접근할 수 없는 private 변수처럼 사용 가능
+              - 예 : 카운터, 비밀번호 저장 등
+  
+              2. 함수 팩토리(커스텀마이징된 함수 만들기) 패턴 구현
+              - 공통 로직을 가진 다양한 함수를 동적으로 생성
+              - 예 : 할인율, 세율 등을 반영한 계산기 생성
+  
+              3. 콜백함수 내부에서 값 유지
+              - 비동기 처리나 반복문 내에서 외부 값을 안전하게 유지
+              - 예 : setTimeout, addEventListener 내부에서 인덱스 기억
+  
+              4. 모듈 패턴 구현
+              - 자바스크립트에서 클래스 없이 모듈화/정보 은닉 가능
+              - 예 : 캡슐화된 라이브러리나 유틸리티 작성
+        */
+        // 클로저
+        function outer() {
+            let msg = "Hello";
+            return (function inner() {
+                console.log("클로저입니다:" + msg);
+            });
+        }
+        const closureFunc = outer(); //outer는 종료되었지만
+        closureFunc(); //여전히 msg를 기억
+
+        // 단순 중첩 함수
+        function outer2() {
+            let msg = "Hi";
+            function inner() {
+                console.log("중첩함수입니다.");
+            }
+            inner(); //즉시 실행되므로 클로저가 아님
+        }
+        outer2();
+
+        // 클로저 - 상태 유지 예제(카운터)
+        function creatCounter() {
+            let count = 0; // count는 외부에서 접근불가(지역변수)하지만, 내부 함수는 계속 기억하고 증가시킴
+            return (function () { //익명의 이너함수, 함수리터럴의 형태로 반환됨
+                count++;
+                return count;
+            });
+        }
+        const counter = creatCounter(); //함수리터럴을 변수에 저장함
+        console.log(counter()); //1
+        console.log(counter()); //2
+
+
+        // 함수 팩토리 예제 - 특정 설정 값을 기반으로 새로운 함수르 생성해 반환하는 함수
+        // 함수를 만들어내는 함수 -> 함수의 재사용성과 유연성이 높아지는 구조
+        function makeMultiplier(x) { //x는 매개변수
+            return function (y) { //x(공통로직)값을 고정시킨 함수를 동적으로 생성
+                return x * y;
+            };
+        }
+        const double = makeMultiplier(2); // 2는 인수
+        console.log(double(5)); //2(x) * 5(y) = 10
+
+
+        // 반복문 + 클로저 예제
+        for (var i = 0; i < 3; i++) {
+            setTimeout((function (index) { //클로저를 쓰지 않으면 i 값이 3으로만 찍힐 수 있음
+                return function () { //내부함수
+                    console.log("i:", index);
+                };//클로저
+            })(i), //for문이 순식간에 3번 돌면서 setTimeout 3개 등록
+                1000); //1초후 callback 함수 수행
+        }
+        //클로저 없이 ->  for문이 끝나고 i =3하나만 기억 -> 3,3,3 출력
+        //클로저 사용 -> 각 반복 시점의 i값(0,1,2)을 따로 기억 -> 0,1,2 출력
+
+
+        /*
+           고차함수(HOF)란?
+           - 함수를 인자로 받거나 함수를 결과로 반환하는 함수
+   
+           고차함수의 2가지 조건 (다음 중 하나 이상을 만족해야 함)
+           - 다른 함수를 인자로 받음 -> 콜백함수가 여기에 해당
+           - 다른 함수를 반환함 -> 클로저가 여기에 해당
+        */
+
+        // 고차함수가 반환한 함수가 클로저가 되는 경우가 많음
+        // 고차함수는 클로저를 만들어내는 대표적인 패턴
+        //  def make_power(n):
+        // def power(x):
+        // return x **n //n은 클로저로 캡쳐됨
+        // return power
+        // 
+        // square = make_power(2) //make_power는 함수를 반환하는 고차함수로, 내부 함수 power가 외부 변수 n을 기억하는 클로저로 동작, n=2를 기억
+        // print(square(4)) //16
+
+
+        /*
+           콜백함수(Callback Function)란?
+           - 다른 함수에 인자(arguments)로 전달되어, 특정 시점에 자동으로 실행되는 함수
+           - 매개변수로 다른 함수를 전달받아 실행하는 함수는 고차함수(HOF)에 해당
+        */
+        function greet(name, callback) {
+            console.log("안녕하세요," + name + "님!");
+            callback(); //콜백함수호출
+        }
+        function afterGreeting() {
+            console.log("방문해주셔서 감사합니다.");
+        }
+        // grret(고차함수)에 afterGreeting(콜백함수)를 인자로 전달
+        greet("한나", afterGreeting); //afterGreeting은 greet 함수가 호출한 후 실행되는 콜백 함수
+        //안녕하세요,한나님!
+        //방문해주셔서 감사합니다.
+
+        /*
+            콜백 함수의 원리
+            - 콜백 함수는 고차 함수 내부에서 호출(실행)됨
+            - 함수는 일급 객체(값처럼 다루는 객체)이므로 함수의 매개변수를 통해 함수 전달이 가능함
+                -> 함수는 더이상 대부 로직에 강력히 의존하지 않고, 외부에서 로직의 일부분을 함수로 전달받아 수행하므로 유연한 구조를 가짐
+            - 고차 함수는 필요에 따라 콜백함수에 인수(Argument)를 추가로 전달할 수 있음
+                -> 그렇기 때문에 고차 함수에 콜백 함수 전달 시 콜백 함수를 호출하지 않고, 함수 자체를 전달해야 함
+        */
+
+        function getUserData(callback) {
+            fetch("https://jsonplaceholder.typicode.com/users/1") //fetch 함수 : 비동기식통신을 제공하는 함수, data가 도착했을 때 then 함수가 실행됨
+                .then(response => response.json()) //응답처리
+                .then(data => { //비동기 작업이 성공했을 때 실행
+                    console.log("사용자 데이터:", data);
+                    callback(); //콜백함수 호출
+                });
+        }
+        function afterFetch() {
+            console.log("데이터 요청이 완료되었습니다");
+        }
+        getUserData(afterFetch);
+        //사용자 데이터: {id: 1, name: 'Leanne Graham', username: 'Bret', email: 'Sincere@april.biz', address: {…}, …}
+        //데이터 요청이 완료되었습니다
+    </script>
+
+    <button id="myBtn">클릭하세요</button>
+
+    <script>
+        function handleClick() {
+            alert("버튼이 클릭되었습니다!");
+        }
+
+        const button = document.getElementById("myBtn");
+        // "click" 이벤트가 발생하면 실행할 동작을 등록 -> 실행 중 Click 발생 시 콜백 함수 실행
+        button.addEventListener("click", handleClick); //콜백으로 handleClick 전달
+    </script>
+</body>
+
+</html>

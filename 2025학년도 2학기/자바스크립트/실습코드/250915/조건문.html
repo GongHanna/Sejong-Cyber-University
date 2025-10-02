@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+
+<body>
+  <script>
+    /*
+      제어문 이란?
+        - 프로그램의 순차적 수행 흐름(순서)을 조건이나 반복에 따라 다르게 실행되도록 만드는 명령어
+      
+      제어문이 필요한 이유
+        - 반복적인 명령어를 반복적으로 작성할 경우, 오류 발생률이 높아지며 유지보수가 어렵고 비효율적임
+        - 주어지는 데이터에 따라 동적으로 결과를 처리할 수 있어야 유연한 프로그램이 될 수 있음
+        - 프로그램의 실행 흐름을 원하는대로 조절하여 반복, 선택, 분기를 가능하게 해주는 핵심도구
+
+      블록문
+       - {} 기호 사용
+       - 하나의 범위(Scope)라는 의미
+       - 코드 블록 또는 블록이라고 지칭
+       - 0개 이상의 문을 중괄호로 묶은 것
+       - 자바스크립트에서 블록문을 하나의 실행 단위로 취급함
+       - 블록문은 언제나 문의 종료를 의미하는 자체 종결성을 갖고 있기 때문에 블록문의 끝에는 세미콜론을 붙이지 않음
+
+       // 블록
+       {
+        var foo = 100;
+       }
+      // 제어문
+      {
+        var x = 1;
+        if(x<10) {
+          x++;
+        }
+      }
+
+      조건문
+       - if문 / switch ~ case문
+      
+      반복문
+      - for문 (기본 for문 / for...in / for...of / forEach())
+      - while문
+      - do~while문
+
+      분기문
+      - break문
+      - continue문
+      - return문
+
+      if문 - 조건문
+       - if(조건식) {
+          문장1;
+          문장2;
+        }
+        문장3;
+    */
+
+    // 0보다 큰 2의 배수를 출력하는 조건문
+    let num = 4;
+
+    if((num>0) && (num%2==0)) {
+      console.log("0보다 큰 양수입니다.");
+      console.log("짝수입니다.");
+    }
+
+    /*
+      if~else문
+       - 조건이 참인 경우 if 블록 {} 실행
+       - 조건이 거짓인 경우 else 블록 {} 반드시 실행
+
+      if(조건식) {
+        문장1;
+        문장2;
+      } else {
+        문장3;
+        문장4;
+      }
+    */
+
+    // if~else문 예시
+    let num1 = 5;
+
+    if(num1%3==0) {
+      console.log("3의 배수입니다"); // 조건식의 결과가 참일 때 실행
+    } else {
+      console.log("3의 배수가 아닙니다"); // 조건식의 결과가 거짓일 때 실행
+    }
+    console.log("종료합니다.") // 조건식과 상관없이 실행
+
+    /*
+      중첩 if문
+        - if문 안에 if문이 있음
+        - 다중 선택 논리를 표현할 수 있음
+
+      if(조건식) {
+        if(조건식) {
+          문장1;
+          문장2;
+          } else {
+            문장3;
+            문장4;
+          }
+          문장5;
+        }
+      
+      다중 if문
+        - 조건식을 순차적으로 검사한 후 참/거짓에 따라 분기를 반복함
+      
+      if(조건식) {
+        문장1;
+        문장2;
+      } else if(조건식) {
+        문장3;
+        문장4;
+        ...
+      } else if(조건식) {
+        문장5;
+        문장6; 
+      } else {
+        문장7; 
+      }
+    */
+
+    let score = 85;
+
+    if(score >= 90) {
+      console.log("A학점");
+    } else if(score >= 80) {
+      console.log("B학점");
+    } else {
+      console.log("C학점 이하");
+    }
+
+    /*
+      switch문
+        - 정수식의 결과에 따라 해당 case문을 수행한 후, break문을 만나면 탈출함
+      
+      switch(정수식) {
+        case 정수1:
+          문장1;
+          break;
+        case 정수2:
+          문장2;
+          break;
+        case 정수3:
+          문장3;
+          break;
+      }
+      
+      switch(정수식) : 정수 값을 기준으로 여러 경우(case)를 분기 처리, case 비교는 엄격 비교(===)로 수행
+      switch(문자열) : 문자열 값 비교 가능
+      switch(boolean) : true / false 조건 분기 가능
+      switch(표현식) : 연산 결과로 판단 가능
+      switch(객체) : 참조 비교(엄격 비교 가능)
+
+      default문
+        - 정수식의 결과에 따라 해당 case문을 수행한 후, break문을 만나면 탈출하고, 해당하는 case문이 없으면 default문을 수행함
+
+      switch(정수식) {
+        case 정수1:
+          문장1;
+          break;
+        case 정수2:
+          문장2;
+          break;
+        case 정수3:
+          문장3;
+          break;
+        default:
+          문장n;
+      }
+    */
+
+    // switch~case문 예시 / 메뉴 번호에 따라 다른 음식을 출력하는 예제
+    let menu = 2;
+
+    switch (menu) {
+      case 1 :
+        console.log("김치찌개");
+        break;
+
+      case 2 :
+        console.log("된장찌개");
+        break;
+      
+      case 3 :
+        console.log("비빔밥");
+        break;
+
+      default:
+        console.log("메뉴를 다시 선택하세요");
+    }
+  </script>
+</body>
+</html>

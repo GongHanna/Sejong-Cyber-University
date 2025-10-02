@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    // 1부터 10까지 숫자를 반복하다가 처음으로 5의 배수를 만나면 반복 종료하기
+    for (let i = 1; i <= 10; i++) {
+      if (i % 5 === 0) {
+        console.log("처음 만난 5의 배수:", i);
+        break;
+      }
+      console.log("현재 숫자:", i); 
+      /*
+        현재 숫자: 1
+        현재 숫자: 2
+        현재 숫자: 3
+        현재 숫자: 4
+        처음 만난 5의 배수: 5
+      */
+    }
+  </script>
+</body>
+</html>

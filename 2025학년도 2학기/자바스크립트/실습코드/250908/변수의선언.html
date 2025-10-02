@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+
+<body>
+  <script>
+    // function scopeTest() {
+    //   if (true) { //블록
+    //     var x = 1;
+    //     let y = 2;
+    //   }
+    //   console.log("var x:", x); // 1 (함수 스코프)
+    //   // console.log("let y:", y) //에러! (블록 스코프)
+    // }
+
+    // scopeTest();
+
+    // console.log(x); // undefined
+    // var x = 5;
+
+    // var x; //선언만 끌어올려지고 값은 ubndefined
+
+    // console.log(x); // undefined
+    // x=5;
+
+    // console.log(x); // Reference Error: Cannot axxess 'x' before initialization
+    // let x = 5;
+    // let/const도 선언 자체는 호이스팅되지만, 초기화 전가지 TDZ(잠깐 접근하면 안 되는 시간, 준비가 안 된 상태)에 묶여 접근할 수 없음
+    // ReferenceError가 발생하며, 이는 var의 '암묵적 undefined'와 큰 차이를 만듦
+    // let/const 변수의 호이스팅 - "TDZ(Temporal Dead Zone)"에 갇힘
+
+
+    // var 예시
+    var x = 10;
+    var x = 20; // 재선언 가능
+    console.log(x); //20
+
+    // let 예시
+    let y = 5;
+    // let y = 8; 재선언 불가 -> 에러
+    y = 8; //재할당은 가능
+    console.log(y); // 8
+
+    // const 예시
+    const z = 15;
+    // z = 20; 재할당 불가 -> 에러
+    // const z = 30; 재선언도 불가
+    console.log(z); // 15 
+
+  </script>
+</body>
+</html>
