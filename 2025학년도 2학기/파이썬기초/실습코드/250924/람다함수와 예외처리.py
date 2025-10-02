@@ -48,7 +48,7 @@ print(lambda_underCheck(3)) #True
 # 람다함수를 이용한 map, filter 함수 적용
 list_num3 = [1,2,3,4,5,6,7,8,9,10]
 
-# map, filter 함수를 이요해서 새로운 리스트를 생성
+# map, filter 함수를 이용해서 새로운 리스트를 생성
 result_filter2 = filter(lambda num : num < 5, list_num3)
 result_map2 = map(lambda num : num * num, list_num3)
 
