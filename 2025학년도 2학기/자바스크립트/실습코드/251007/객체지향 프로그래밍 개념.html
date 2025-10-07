@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        /*
+            객체 구성 형태 : 다수의 데이터 + 다수의 기능(함수)
+            객체의 의미 : 단일 책임, 단일 역할 수행
+
+            Object 
+            = 단일 책임 = 단일 역할 = 관련된 다수의 기능 + 관련된 다수의 데이터
+            = 독립적 실행 단위 = Code + Data
+
+            객체지향 패러다임의 기본 개념
+            1. 캡슐화 : 데이터와 메서드를 하나로 묶고 외부에서 직접 접근하지 못하도록 보호하는 것
+            2. 추상화 : 복잡한 현실을 핵심적인 개념이나 동작만 드러내어 단순화하는 것
+            3. 다형성 : 동일한 인터페이스로 서로 다른 동작을 실행할 수 있는 능력
+        */
+
+        // 캡슐화
+        class Accout { // class => 객체 생성(선언문)
+            #balance = 0; // #으로 선언하면 private 필드
+            deposit(amount) { //예금
+                if (amount > 0) this.#balance += amount;
+            }
+            getBalance() { //잔금확인
+                return this.#balance;
+            }
+        }
+        const acc = new Accout(); // 객체생성 -> 역할을 수행할 실체 
+        acc.deposit(1000);
+        console.log(acc.getBalance()); //1000
+        // console.log(add.#balance); // 에러: private 필드 접근 불가
+
+
+        // 추상화
+        class Car {
+            drive() {
+                console.log("자동차가 달립니다.");
+            }
+        }
+        const myCar = new Car();
+        myCar.drive(); // 복잡한 엔진 작동은 숨기고 "달린다"는 행위만 드러냄
+
+
+        // 다형성
+        class Animal {
+            speak() {
+                console.log("동물이 소리를 냅니다.");
+            }
+        }
+        class Dog extends Animal { // extends => 확장 개념, 뒤에 선언되어 있는 속성,메소드를 모두 상속한다, Animal = 부모, Dog = 자식
+            speak() { // 재정의
+                console.log("멍멍");
+            }
+        }
+        class Cat extends Animal {
+            speak() {
+                console.log("야옹~");
+            }
+        }
+        const animals = [new Dog(), new Cat(), new Animal()];
+        // 같은 메서드 이름으로 다른 클래스가 각기 다르게 동작함
+        animals.forEach(animal => animal.speak());
+        /*
+            결과:
+            멍멍!
+            야옹~
+            동물이 소리를 냅니다.
+        */
+    </script>
+</body>
+</html>
