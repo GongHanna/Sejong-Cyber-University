@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // 객체리터럴 정의
+        // 객체 메서드 안에서 자기 자신 속성을 접근할 때는 반드시 this.를 붙여야 한다
+        // 코드 재활용 불가능
+        pobj = {
+            x:100,
+            y:200,
+            myShape: "Player",
+            display: function() {
+                console.log("x = " + this.x + ", y = " + this.y + ": " + this.myShape);
+            },
+            moveLeft: function() {
+                this.x = this.x - 2;
+                this.display();
+            },
+            moveRight: function() {
+                this.x = this.x + 2;
+                this.display();
+            }
+        };
+
+        pobj.display();
+    </script>
+
+    <script>
+        // 생성자함수 패턴 정의
+        // 첫글자를 대문자로 정의하는 것이 생성자함수의 특징
+        function Player(mx, my) {
+            // 인스턴스 변수를 생성하고 초기화
+            this.x = mx;
+            this.y = my;
+            this.myShape = "Player"; 
+        }
+        // 공통으로 쓸 함수를 정의하면, 모든 인스턴스가 공유해서 사용 가능
+        Player.prototype.display = function() {
+            console.log("x = " + this.x + ", y = " + this.y + ": " + this.myShape);
+        };
+        Player.prototype.moveLeft = function() {
+            this.x -= 10;
+            this.display();
+        };
+        Player.prototype.moveRight = function() {
+            this.x += 10;
+            this.display();
+        };
+        
+        var poj2 = new Player(300,400);
+        var poj3 = new Player(500,600);
+
+        poj2.display();
+        poj3.display();
+    </script>
+</body>
+</html>
