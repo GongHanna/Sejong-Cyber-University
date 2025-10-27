@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        /*
+            모든 element는 document 객체의 하위 객체로 관리함
+
+            [기본형] getElenment() 함수
+            - document.getElementById("id명")
+            - document.getElementsByClassName("class명")
+            - document.getElementsByTagName("태그명")
+
+            getElementsByClassName()과 document.getElementsByTagName()은 반환 값이 2개 이상일 수 있음 => HTMLCollection 객체에 저장됨
+
+            getElementById : 단일 요소 , ID 기반
+            querySelector : 단일 요소, CSS 선택자 - 한 개의 값만 반환, id 이름 앞에는 해시 기호, class 이름 앞에는 마침표, 태그는 기호 없이 태그명 사용
+            querySelectorAll : NodeList, querySelectorAll() 메소드는 반환 값이 여러 개 일때 모두 반환 -> 노드리스트로 저장, 여러 요소(forEach) 가능
+        */
+    </script>
+
+    <!-- 
+        [기본형] createElement() 함수
+        - document.createElement("요소명") // 계층구조에 맞춰 추가해야 함
+    -->
+    <h1>Web Programing</h1>
+    <ul id="itemList">
+        <li>HTML</li>
+        <li>CSS</li>
+        <li>Javascript</li>
+    </ul>
+
+    <script>
+        const ul = document.getElementById("itemList");
+        const newItem = document.createElement("li");
+
+        ul.appendChild(newItem);
+    </script>
+
+
+    <h2>오늘의 주제</h2>
+    <p>오늘의 주제는 환경입니다</p>
+
+    <script>
+        const p = document.createElement("p");
+        p.textContent = "새 문장 추가!";
+        document.body.appendChild(p);
+
+        p.setAttribute("class", "blue");
+        p.style.color = "red";
+        p.classList.add("active");
+    </script>
+</body>
+</html>

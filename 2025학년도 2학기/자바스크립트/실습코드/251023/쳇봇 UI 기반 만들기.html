@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>심플 챗봇</title>
+    <style>
+        /* 전체 배경 및 폰트 */
+        body {font-family: sans-serif; background: #fff8dc; display: flex; flex-direction: column; height: 100vh;}
+        /* 채팅창 스타일 */
+        #chat {flex: 1; padding: 10px; overflow-y: auto; background: #fffbe3;}
+        .msg {margin: 5px 0; padding: 8px 12px; border-radius: 15px; max-width: 70%;}
+        /* 사용자 메시지 */
+        .user {background: #ffe500; color: #000; align-self: flex-end;}
+        /* 챗봇 메시지 */
+        .bot {background: #fff; color: #333; align-self: flex-start; border: 1px solid #ffeb99;}
+        /* 입력창 영역 */
+        #input {display: flex; padding: 10px; background: #fff3b3;}
+        input {flex: 1; padding: 8px; border-radius: 20px; border: 1px solid #ffea66;}
+        button {margin-left: 5px; padding: 8px 12px; border: none; border-radius: 20px; background-color: #ffd500; color: #000; cursor: pointer;}
+        button:hover {background-color: #ffec42;}
+    </style>
+</head>
+<body>
+    <!-- 채팅 메시지 출력 영역 -->
+    <div id="chat"></div>
+    <!-- 사용자 입력 영역 -->
+    <div id="input">
+        <input type="text" id="msg" placeholder="메시지를 입력하세요">
+        <button onclick="send()">전송</button>
+    </div>
+    <script>
+        // 엔터 키로 전송 가능
+        var msgInput = document.getElementById("msg");
+        msgInput.addEventListener("keydown", function(e){
+            if(e.key === "Enter"){
+                send();
+            }
+        });
+
+        // 메시지 전송 함수
+        function send() {
+            var v = document.getElementById("msg");
+            if (!v.value.trim()) return;
+            var userMsg = v.value.trim();
+            addMsg(userMsg, "user");
+            v.value = "";
+
+            // 챗봇 응답 표시
+            setTimeout(function(){
+                var response = "응답: " + userMsg;
+                addMsg(response, "bot");
+            }, 500);
+        }
+
+        // 메시지 추가 함수
+        function addMsg(t, c) {
+            var d = document.createElement("div");
+            d.className = "msg " + c;
+            d.textContent = t;
+            document.getElementById("chat").appendChild(d);
+            d.scrollIntoView();
+        }
+    </script>
+</body>
+</html>
