@@ -306,6 +306,20 @@
 <br>
 
 ## 📌 자바스크립트
+**🗓 2025.10.30**
+<details> 
+  
+  - 다양한 라이브러리 소개(highlights.js)
+
+  - Slick 슬라이더 라이브러리 사용 예
+
+  - highlight.js 라이브러리 사용 예
+
+  - 챗봇 UI 구현 실습
+</details>
+
+<br>
+
 **🗓 2025.10.28**
 <details> 
   
